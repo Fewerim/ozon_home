@@ -7,10 +7,10 @@ import (
 	"todoList/internal/core/domain"
 )
 
-// GetListTasks - возвращает список задач, который фильтруется: по статусу и просроченным заданиям. Результирующий список сортируется по дедлайну, если дедлайн совпадает, то по айди
+// GetListTasks - возвращает список задач из хранилища, который фильтруется: по статусу и просроченным заданиям. Результирующий список сортируется по дедлайну задач, если дедлайн совпадает, то по айди
 func (r *MemoryRepository) GetListTasks(targetStatus domain.TaskStatus, exited bool) ([]domain.Task, error) {
 	// применение фильтров
-	tasks := r.filtered(targetStatus, exited)
+	tasks := r.filter(targetStatus, exited)
 
 	// инициализируем слайс, чтобы в него передать все значения хранящиеся в репо (защищаем от внешнего изменения задач)
 	result := make([]domain.Task, 0, len(tasks))
@@ -19,18 +19,20 @@ func (r *MemoryRepository) GetListTasks(targetStatus domain.TaskStatus, exited b
 		result = append(result, *task)
 	}
 
-	// сортировка
-	sorted(result)
+	// сортировка по дедлайну/айди
+	sort(result)
 
 	return result, nil
 }
 
-func (r *MemoryRepository) filtered(targetStatus domain.TaskStatus, exited bool) map[int64]*domain.Task {
-	result := make(map[int64]*domain.Task, len(r.tasks))
+// filtered - фильтр для получения списка задач.
+// Следующий фильтр: статус, только просроченные
+func (r *MemoryRepository) filter(targetStatus domain.TaskStatus, exited bool) map[domain.TaskID]*domain.Task {
+	result := make(map[domain.TaskID]*domain.Task, len(r.tasks))
 	now := time.Now()
 
 	for id, task := range r.tasks {
-		if task.Status != targetStatus {
+		if targetStatus != "" && task.Status != targetStatus {
 			continue
 		}
 
@@ -45,7 +47,7 @@ func (r *MemoryRepository) filtered(targetStatus domain.TaskStatus, exited bool)
 	return result
 }
 
-func sorted(tasks []domain.Task) {
+func sort(tasks []domain.Task) {
 	slices.SortFunc(tasks, func(t1, t2 domain.Task) int {
 		if n := t1.Deadline.Compare(t2.Deadline); n != 0 {
 			return n

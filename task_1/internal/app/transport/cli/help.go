@@ -7,6 +7,7 @@ import (
 
 type commandHandler func(args []string) error
 
+// commands - маппит название команды к ее хендлеру
 func (h *HandlerTasks) commands() map[string]commandHandler {
 	return map[string]commandHandler{
 		"add":           h.AddTask,
@@ -18,6 +19,7 @@ func (h *HandlerTasks) commands() map[string]commandHandler {
 	}
 }
 
+// Help - запросить навигацию по всем доступным командам приложения
 func (h *HandlerTasks) Help() error {
 	descriptions := map[string]string{
 		"add":           "добавить задачу",

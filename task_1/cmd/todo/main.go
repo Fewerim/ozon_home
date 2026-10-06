@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	memoryrepository "todoList/internal/app/repository/memory_repository"
 	"todoList/internal/app/service"
-	memoryrepository "todoList/internal/repository/memory_repository"
-	"todoList/internal/transport/cli"
+	"todoList/internal/app/transport/cli"
 )
 
 func main() {
@@ -13,6 +13,6 @@ func main() {
 	tasksHandler := cli.NewHandlerTasks(tasksService)
 
 	if err := tasksHandler.Run(); err != nil {
-		log.Fatal("failed app: %w", err)
+		fmt.Println(err)
 	}
 }

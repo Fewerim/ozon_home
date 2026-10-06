@@ -2,12 +2,12 @@ package memoryrepository
 
 import "todoList/internal/core/domain"
 
-// CreateTask - создает новую задачу
+// CreateTask - создает новую задачу в хранилище
 func (r *MemoryRepository) CreateTask(newTask *domain.Task) (*domain.Task, error) {
-	nextID := r.nextID
-	newTask.ID = nextID
+	currentId := r.nextID
+	newTask.ID = currentId
 
-	r.tasks[nextID] = newTask
+	r.tasks[currentId] = newTask
 	r.updateNextID()
 
 	return newTask, nil

@@ -5,6 +5,7 @@ import (
 	"todoList/internal/core/domain"
 )
 
+// CreateTask - создает задачу, проводит валидацию (применение бизнес правил)
 func (s *TasksService) CreateTask(params *CreateTaskParams) (*domain.Task, error) {
 	// проверка входных параметров
 	deadline, err := domain.ParseDeadlineToNeedFormat(params.Deadline)
@@ -12,7 +13,7 @@ func (s *TasksService) CreateTask(params *CreateTaskParams) (*domain.Task, error
 		return nil, fmt.Errorf("faiiled to parse deadline: %w", err)
 	}
 
-	// создание неинициализированной задачи (нулевой айди)
+	// создание неинициализированной задачи
 	unitializedTask := domain.NewUnitializedTask(params.Title, deadline)
 
 	// бизнес логика (бизнес проверки)
@@ -20,7 +21,7 @@ func (s *TasksService) CreateTask(params *CreateTaskParams) (*domain.Task, error
 		return nil, fmt.Errorf("failed to validate task: %w", err)
 	}
 
-	// сохранение задачи в репозиторий
+	// сохранение задачи в репозиторий (хранилище)
 	createdTask, err := s.repo.CreateTask(unitializedTask)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create task: %w", err)

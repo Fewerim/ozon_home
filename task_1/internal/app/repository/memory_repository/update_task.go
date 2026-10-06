@@ -6,9 +6,9 @@ import (
 	core_errors "todoList/internal/core/errors"
 )
 
-// UpdateTask - обновляет задачу по айди
+// UpdateTask - обновляет задачу в хранилище по айди
 // TODO: подумать как можно реализовать по-другому
-func (r *MemoryRepository) UpdateTask(id int64, updatedTask *domain.Task) (*domain.Task, error) {
+func (r *MemoryRepository) UpdateTask(id domain.TaskID, updatedTask *domain.Task) (*domain.Task, error) {
 	if id != updatedTask.ID {
 		return nil, fmt.Errorf("task's id not case: %w", core_errors.ErrInvalidArgument)
 	}

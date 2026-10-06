@@ -2,14 +2,18 @@ package domain
 
 import (
 	"fmt"
+	"strings"
 	"time"
 	core_errors "todoList/internal/core/errors"
 )
 
-// Формат дедлайна задачи
 const (
-	taskDeadlineFormat = "2006-01-02"
+	taskDeadlineFormat string = "2006-01-02" // Формат дедлайна задачи
+	unitializedID      TaskID = 0            // Пустой айди, при создании сущности Task
 )
+
+// TaskID - тип для определения идентификатора задачи
+type TaskID int64
 
 // TaskStatus - тип для определения статуса задачи
 type TaskStatus string
@@ -24,7 +28,6 @@ const (
 
 // Validate - валидирует статусы, если статусы не подходят - возвращает ошибку
 func (s TaskStatus) Validate() error {
-	//TODO: подумать как можно сделать иначе
 	switch s {
 	case StatusCanceled, StatusDone, StatusInProgress, StatusPlanned:
 		return nil
@@ -33,14 +36,14 @@ func (s TaskStatus) Validate() error {
 	}
 }
 
-// Task - структура задачи, включает в себя заголовок, статус, дедлайн
+// Task - структура задачи, включает в себя заголовок, статус, дедлайн, время создания
 type Task struct {
-	ID       int64      // айди задачи
+	ID       TaskID     // айди задачи
 	Title    string     // заголовок
 	Status   TaskStatus // статус задачи (planned, in_progress, canceled, done)
 	Deadline time.Time  // дедлайн
 
-	// позволит более удобно проверять дедлайн, что он не в прошлом
+	// позволит более удобно проверять дедлайн
 	CreatedAt time.Time // дата создания задачи
 }
 
@@ -49,12 +52,11 @@ func NewUnitializedTask(
 	title string,
 	deadline time.Time,
 ) *Task {
-	// Дефолтный статус при создании задачи
-	const statusDefault = StatusPlanned
+	const statusDefault = StatusPlanned // Дефолтный статус при создании задачи
 	createdAt := time.Now()
 
 	return &Task{
-		ID:        UnitializedID,
+		ID:        unitializedID,
 		Title:     title,
 		Status:    statusDefault,
 		Deadline:  deadline,
@@ -64,7 +66,7 @@ func NewUnitializedTask(
 
 // NewTask - создает экземпляр задачи
 func NewTask(
-	id int64,
+	id TaskID,
 	title string,
 	status TaskStatus,
 	deadline time.Time,
@@ -79,16 +81,19 @@ func NewTask(
 	}
 }
 
-// validate - валидация полей задания (проверяет заголовок и дедлайн, валидный статус)
+// validate - валидация полей сущности Task (проверяет заголовок, дедлайн, статус)
 func (t *Task) Validate() error {
-	if t.Title == "" {
-		return fmt.Errorf("title must be not empty %w", core_errors.ErrInvalidArgument)
+	// Заголовок не пустой
+	if strings.TrimSpace(t.Title) == "" {
+		return fmt.Errorf("title must be not empty: %w", core_errors.ErrInvalidArgument)
 	}
 
+	// Значение дедлайна не установлено в прошлом
 	if t.Deadline.Before(t.CreatedAt) {
-		return fmt.Errorf("deadline must be not in past %w", core_errors.ErrInvalidArgument)
+		return fmt.Errorf("deadline must be not in past: %w", core_errors.ErrInvalidArgument)
 	}
 
+	// Валидный статус
 	if err := t.Status.Validate(); err != nil {
 		return fmt.Errorf("failed to validate task status: %w", err)
 	}

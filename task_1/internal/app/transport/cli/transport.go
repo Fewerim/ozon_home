@@ -5,46 +5,56 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 	"todoList/internal/app/service"
 	"todoList/internal/core/domain"
+	"todoList/pkg/utils"
 )
 
+// serviceTasks - интерфейс сервисного слоя, который отвечает за бизнес логику приложения
 type serviceTasks interface {
 	CreateTask(params *service.CreateTaskParams) (*domain.Task, error)
-	GetTask(id int64) (*domain.Task, error)
+	GetTask(id domain.TaskID) (*domain.Task, error)
 	GetListTasks(params *service.FiltersParams) ([]domain.Task, error)
-	UpdateTask(id int64, params *service.UpdateTaskParams) (*domain.Task, error)
-	ChangeTaskStatus(id int64, targetStatus string) (*domain.Task, error)
-	DeleteTask(id int64) error
+	UpdateTask(id domain.TaskID, params *service.UpdateTaskParams) (*domain.Task, error)
+	ChangeTaskStatus(id domain.TaskID, targetStatus string) (*domain.Task, error)
+	DeleteTask(id domain.TaskID) error
 }
 
 type HandlerTasks struct {
 	service serviceTasks // имплементируемый интерфейс сервисного слоя приложения
 
-	in  io.Reader // читатель из консоли
-	out io.Writer // писатель в консоль
+	in      io.Reader
+	out     io.Writer
+	scanner *bufio.Scanner
 }
 
 func NewHandlerTasks(service serviceTasks) *HandlerTasks {
 	return &HandlerTasks{
 		service: service,
-		in:      os.Stdin,
-		out:     os.Stdout,
+
+		in:  os.Stdin,
+		out: os.Stdout,
 	}
 }
 
-// TODO: перенести куда-то
+// Run - запуск приложения
 func (h *HandlerTasks) Run() error {
-	scanner := bufio.NewScanner(h.in)
+	h.scanner = bufio.NewScanner(h.in)
 	commands := h.commands()
 
-	if _, err := fmt.Fprintln(h.out, "Добро пожаловать в консольное приложение Todo. Для навигации введите: 'help'!"); err != nil {
+	if _, err := fmt.Fprintln(h.out, "Добро пожаловать в консольное приложение Todo.\nДля навигации введите: 'help'!"); err != nil {
 		return err
 	}
 
-	for scanner.Scan() {
-		fields := strings.Fields(scanner.Text())
+	for h.scanner.Scan() {
+		fields, err := utils.ParseStringToArgs(h.scanner.Text())
+		if err != nil {
+			if _, printErr := fmt.Fprintf(h.out, "Ошибка ввода: %v\n", err); printErr != nil {
+				return fmt.Errorf("failed to print input error: %w", printErr)
+			}
+			continue
+		}
+
 		if len(fields) == 0 {
 			continue
 		}
@@ -72,5 +82,5 @@ func (h *HandlerTasks) Run() error {
 		}
 	}
 
-	return scanner.Err()
+	return h.scanner.Err()
 }
