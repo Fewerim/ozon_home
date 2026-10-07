@@ -3,8 +3,8 @@ package cli
 import (
 	"flag"
 	"fmt"
-	"todoList/internal/core/domain"
-	core_errors "todoList/internal/core/errors"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 )
 
 // GetTask - получить задачу по айди

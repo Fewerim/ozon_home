@@ -3,9 +3,9 @@ package cli
 import (
 	"flag"
 	"fmt"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 	"strings"
-	"todoList/internal/core/domain"
-	core_errors "todoList/internal/core/errors"
 )
 
 // ChangeTaskStatus - меняет статус задачи

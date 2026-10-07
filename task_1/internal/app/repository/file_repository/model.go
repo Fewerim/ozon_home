@@ -1,8 +1,8 @@
 package filerepository
 
 import (
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	"time"
-	"todoList/internal/core/domain"
 )
 
 type TaskModel struct {

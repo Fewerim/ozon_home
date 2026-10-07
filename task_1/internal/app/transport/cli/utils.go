@@ -3,7 +3,7 @@ package cli
 import (
 	"flag"
 	"fmt"
-	core_errors "todoList/internal/core/errors"
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 )
 
 func parseFlags(flags *flag.FlagSet, args []string) error {

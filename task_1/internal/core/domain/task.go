@@ -2,9 +2,9 @@ package domain
 
 import (
 	"fmt"
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 	"strings"
 	"time"
-	core_errors "todoList/internal/core/errors"
 )
 
 const (

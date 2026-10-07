@@ -3,11 +3,11 @@ package cli
 import (
 	"bufio"
 	"fmt"
+	"github.com/Fewerim/ozon_home/task_1/internal/app/service"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
+	"github.com/Fewerim/ozon_home/task_1/pkg/utils"
 	"io"
 	"os"
-	"todoList/internal/app/service"
-	"todoList/internal/core/domain"
-	"todoList/pkg/utils"
 )
 
 // serviceTasks - интерфейс сервисного слоя, который отвечает за бизнес логику приложения

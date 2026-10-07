@@ -1,8 +1,8 @@
 package filerepository
 
 import (
-	"todoList/internal/app/repository/filter"
-	"todoList/internal/core/domain"
+	"github.com/Fewerim/ozon_home/task_1/internal/app/repository/filter"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
 // GetListTasks - возвращает список задач из хранилища, который фильтруется: по статусу и просроченным заданиям. Результирующий список сортируется по дедлайну задач, если дедлайн совпадает, то по айди

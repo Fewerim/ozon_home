@@ -3,7 +3,7 @@ package cli
 import (
 	"flag"
 	"fmt"
-	"todoList/internal/app/service"
+	"github.com/Fewerim/ozon_home/task_1/internal/app/service"
 )
 
 // GetListTasks - получает список задач по фильтру

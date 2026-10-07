@@ -2,9 +2,9 @@ package filter
 
 import (
 	"cmp"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	"slices"
 	"time"
-	"todoList/internal/core/domain"
 )
 
 // FilterAndSort - фильтр для получения списка задач и сортировка их по дедлайну/айди

@@ -3,10 +3,10 @@ package cli
 import (
 	"flag"
 	"fmt"
+	"github.com/Fewerim/ozon_home/task_1/internal/app/service"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 	"strings"
-	"todoList/internal/app/service"
-	"todoList/internal/core/domain"
-	core_errors "todoList/internal/core/errors"
 )
 
 // UpdateTask - обновить существующую задачу

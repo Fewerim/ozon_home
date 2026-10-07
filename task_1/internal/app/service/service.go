@@ -1,7 +1,7 @@
 package service
 
 import (
-	"todoList/internal/core/domain"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
 // taskRepository - интерфейс репозитория для хранения задач и работы с ними

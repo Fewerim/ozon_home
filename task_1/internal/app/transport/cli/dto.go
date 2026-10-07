@@ -2,9 +2,9 @@ package cli
 
 import (
 	"fmt"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	"strings"
 	"time"
-	"todoList/internal/core/domain"
 )
 
 // TaskDTO - структура для передачи сущности задачи клиенту

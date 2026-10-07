@@ -1,7 +1,7 @@
 package memoryrepository
 
 import (
-	"todoList/internal/core/domain"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
 // MemoryRepository - хранилище задач в оперативной памяти.

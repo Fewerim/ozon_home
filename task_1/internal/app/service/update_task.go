@@ -2,9 +2,9 @@ package service
 
 import (
 	"fmt"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 	"time"
-	"todoList/internal/core/domain"
-	core_errors "todoList/internal/core/errors"
 )
 
 // UpdateTask - обновление задачи
