@@ -12,13 +12,13 @@ type MemoryRepository struct {
 	nextID domain.TaskID                  // используется для определения следующего айди
 }
 
-func NewMemoryRepository() *MemoryRepository {
+func NewMemoryRepository() (*MemoryRepository, error) {
 	const defaultNextId domain.TaskID = 1
 
 	return &MemoryRepository{
 		tasks:  make(map[domain.TaskID]*domain.Task),
 		nextID: defaultNextId,
-	}
+	}, nil
 }
 
 // updateNextID - обновляет счетчик следующего айди

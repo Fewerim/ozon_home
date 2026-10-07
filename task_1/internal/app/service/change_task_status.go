@@ -45,6 +45,10 @@ func (s *TasksService) ChangeTaskStatus(id domain.TaskID, targetStatus string) (
 
 // validateChangeTaskStatus - проверяет бизнес правила для обновления статуса задачи
 func validateChangeTaskStatus(tmp *domain.Task, targetStatus domain.TaskStatus) error {
+	if tmp == nil {
+		return fmt.Errorf("task must not be nil: %w", core_errors.ErrInvalidArgument)
+	}
+
 	if tmp.Status == domain.StatusCanceled || tmp.Status == domain.StatusDone {
 		return fmt.Errorf("status task with status: '%v' can't be change: %w", tmp.Status, core_errors.ErrInvalidArgument)
 	}

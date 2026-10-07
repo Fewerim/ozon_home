@@ -3,10 +3,15 @@ package service
 import (
 	"fmt"
 	"todoList/internal/core/domain"
+	core_errors "todoList/internal/core/errors"
 )
 
 // CreateTask - создает задачу, проводит валидацию (применение бизнес правил)
 func (s *TasksService) CreateTask(params *CreateTaskParams) (*domain.Task, error) {
+	if params == nil {
+		return nil, fmt.Errorf("create task params must not be nil: %w", core_errors.ErrInvalidArgument)
+	}
+
 	// проверка входных параметров
 	deadline, err := domain.ParseDeadlineToNeedFormat(params.Deadline)
 	if err != nil {

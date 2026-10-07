@@ -7,10 +7,12 @@ import (
 )
 
 // UpdateTask - обновляет задачу в хранилище по айди
-// TODO: подумать как можно реализовать по-другому
 func (r *MemoryRepository) UpdateTask(id domain.TaskID, updatedTask *domain.Task) (*domain.Task, error) {
+	if updatedTask == nil {
+		return nil, fmt.Errorf("updated task must be not nil: %w", core_errors.ErrInvalidArgument)
+	}
 	if id != updatedTask.ID {
-		return nil, fmt.Errorf("task's id not case: %w", core_errors.ErrInvalidArgument)
+		return nil, fmt.Errorf("task ID does not match %d: %w", id, core_errors.ErrInvalidArgument)
 	}
 
 	if _, ok := r.tasks[id]; !ok {

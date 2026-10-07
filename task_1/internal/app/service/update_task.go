@@ -9,6 +9,10 @@ import (
 
 // UpdateTask - обновление задачи
 func (s *TasksService) UpdateTask(id domain.TaskID, params *UpdateTaskParams) (*domain.Task, error) {
+	if params == nil {
+		return nil, fmt.Errorf("update task params must not be nil: %w", core_errors.ErrInvalidArgument)
+	}
+
 	// получение задачи из репозитория
 	task, err := s.repo.GetTask(id)
 	if err != nil {
@@ -39,6 +43,10 @@ func (s *TasksService) UpdateTask(id domain.TaskID, params *UpdateTaskParams) (*
 
 // validateUpdateTaskParams - проверяет на валидность параметры для обновления задачи
 func validateUpdateTaskParams(tmpTask *domain.Task, params *UpdateTaskParams) error {
+	if tmpTask == nil || params == nil {
+		return fmt.Errorf("task and update params must not be nil: %w", core_errors.ErrInvalidArgument)
+	}
+
 	now := time.Now()
 
 	if tmpTask.Status == domain.StatusDone || tmpTask.Status == domain.StatusCanceled {

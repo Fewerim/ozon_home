@@ -1,18 +1,21 @@
 package main
 
 import (
-	"fmt"
-	memoryrepository "todoList/internal/app/repository/memory_repository"
+	"log"
+	filerepository "todoList/internal/app/repository/file_repository"
 	"todoList/internal/app/service"
 	"todoList/internal/app/transport/cli"
 )
 
 func main() {
-	memoryrepository := memoryrepository.NewMemoryRepository()
+	memoryrepository, err := filerepository.NewFileRepository("data", "tasks")
+	if err != nil {
+		panic("failed to init tasks repository")
+	}
 	tasksService := service.NewTasksService(memoryrepository)
 	tasksHandler := cli.NewHandlerTasks(tasksService)
 
 	if err := tasksHandler.Run(); err != nil {
-		fmt.Println(err)
+		log.Println(err.Error())
 	}
 }
