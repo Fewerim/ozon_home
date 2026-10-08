@@ -3,11 +3,12 @@ package cli
 import (
 	"bufio"
 	"fmt"
+	"io"
+	"os"
+
 	"github.com/Fewerim/ozon_home/task_1/internal/app/service"
 	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	"github.com/Fewerim/ozon_home/task_1/pkg/utils"
-	"io"
-	"os"
 )
 
 // serviceTasks - интерфейс сервисного слоя, который отвечает за бизнес логику приложения
@@ -18,6 +19,7 @@ type serviceTasks interface {
 	UpdateTask(id domain.TaskID, params *service.UpdateTaskParams) (*domain.Task, error)
 	ChangeTaskStatus(id domain.TaskID, targetStatus string) (*domain.Task, error)
 	DeleteTask(id domain.TaskID) error
+	ImportTasks(params *service.ImportTasksParams) (*service.ImportTasksResult, error)
 }
 
 type HandlerTasks struct {
@@ -63,7 +65,7 @@ func (h *HandlerTasks) Run() error {
 
 		switch command {
 		case "help":
-			if err := h.Help(); err != nil {
+			if err := h.Help(args); err != nil {
 				return err
 			}
 		case "exit":

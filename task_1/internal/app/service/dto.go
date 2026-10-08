@@ -1,6 +1,8 @@
 package service
 
 import (
+	"encoding/json"
+
 	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
@@ -43,4 +45,45 @@ func NewCreateTaskParams(title string, deadline string) *CreateTaskParams {
 		Title:    title,
 		Deadline: deadline,
 	}
+}
+
+// ImportTasksParams - параметры для загрузки задач из файла
+type ImportTasksParams struct {
+	Tasks []json.RawMessage
+}
+
+func NewImportTasksParams(data []json.RawMessage) *ImportTasksParams {
+	return &ImportTasksParams{
+		Tasks: data,
+	}
+}
+
+// ImportTaskError связывает ошибку с номером элемента во входном JSON-массиве.
+type ImportTaskError struct {
+	Index int
+	Err   error
+}
+
+func NewImportTaskError(index int, err error) *ImportTaskError {
+	return &ImportTaskError{
+		Index: index,
+		Err:   err,
+	}
+}
+
+// ImportTasksResult - результат загрузки задач из файла
+type ImportTasksResult struct {
+	Created []domain.Task     // успешно загруженные задачи
+	Errors  []ImportTaskError // ошибки загрузки
+}
+
+func NewImportTasksResults(cap int) *ImportTasksResult {
+	return &ImportTasksResult{
+		Created: make([]domain.Task, 0, cap),
+		Errors:  make([]ImportTaskError, 0),
+	}
+}
+
+func (res *ImportTasksResult) AddError(currentIndex int, err error) {
+	res.Errors = append(res.Errors, *NewImportTaskError(currentIndex, err))
 }

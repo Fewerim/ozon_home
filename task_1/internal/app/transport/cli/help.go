@@ -3,11 +3,11 @@ package cli
 import (
 	"fmt"
 	"sort"
+	"strings"
 )
 
 type commandHandler func(args []string) error
 
-// commands - маппит название команды к ее хендлеру
 func (h *HandlerTasks) commands() map[string]commandHandler {
 	return map[string]commandHandler{
 		"add":           h.AddTask,
@@ -16,33 +16,47 @@ func (h *HandlerTasks) commands() map[string]commandHandler {
 		"delete":        h.DeleteTask,
 		"update":        h.UpdateTask,
 		"change-status": h.ChangeTaskStatus,
+		"import":        h.ImportTasks,
 	}
 }
 
-// Help - запросить навигацию по всем доступным командам приложения
-func (h *HandlerTasks) Help() error {
-	descriptions := map[string]string{
-		"add":           "добавить задачу",
-		"get-list":      "показать список задач",
-		"get":           "показать задачу по ID",
-		"delete":        "удалить задачу",
-		"update":        "изменить заголовок и/или дедлайн задачи",
-		"change-status": "изменить статус задачи",
-		"help":          "показать список команд",
-		"exit":          "завершить работу",
+func (h *HandlerTasks) Help(args []string) error {
+	if len(args) > 1 {
+		return fmt.Errorf("использование: help [команда]")
 	}
 
-	names := []string{"help", "exit"}
-	for name := range h.commands() {
-		names = append(names, name)
-	}
-	sort.Strings(names)
-
-	for _, name := range names {
-		if _, err := fmt.Fprintf(h.out, "%s — %s\n", name, descriptions[name]); err != nil {
-			return fmt.Errorf("failed to print help: %w", err)
+	if len(args) == 0 {
+		names := []string{"help", "exit"}
+		for name := range h.commands() {
+			names = append(names, name)
 		}
+		sort.Strings(names)
+
+		_, err := fmt.Fprintf(
+			h.out,
+			"Команды: %s\nПодробности: help <команда>\n",
+			strings.Join(names, ", "),
+		)
+		return err
 	}
 
-	return nil
+	descriptions := map[string]string{
+		"add":           `add --title="Купить хлеб" --deadline="2030-01-15" — создать задачу`,
+		"get-list":      `get-list [--status=planned] [--exited] — показать список задач`,
+		"get":           `get --id=1 — показать задачу`,
+		"delete":        `delete --id=1 — удалить задачу`,
+		"update":        `update --id=1 [--title="Новый заголовок"] [--deadline="2030-02-01"] — изменить задачу`,
+		"change-status": `change-status --id=1 --status=done — изменить статус`,
+		"import":        `import --path="examples/import_tasks.json" — импортировать задачи`,
+		"help":          `help [команда] — показать справку`,
+		"exit":          `exit — завершить работу`,
+	}
+
+	description, ok := descriptions[args[0]]
+	if !ok {
+		return fmt.Errorf("неизвестная команда: %q", args[0])
+	}
+
+	_, err := fmt.Fprintln(h.out, description)
+	return err
 }
