@@ -1,16 +1,16 @@
 package service
 
 import (
-	"todoList/internal/core/domain"
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
-// taskRepository - интерфейс репозитория для работы с задачами
+// taskRepository - интерфейс репозитория для хранения задач и работы с ними
 type taskRepository interface {
 	CreateTask(task *domain.Task) (*domain.Task, error)
-	GetTask(id int64) (*domain.Task, error)
+	GetTask(id domain.TaskID) (*domain.Task, error)
 	GetListTasks(targetStatus domain.TaskStatus, exited bool) ([]domain.Task, error)
-	UpdateTask(id int64, task *domain.Task) (*domain.Task, error)
-	DeleteTask(id int64) error
+	UpdateTask(id domain.TaskID, task *domain.Task) (*domain.Task, error)
+	DeleteTask(id domain.TaskID) error
 }
 
 // TasksService - сервисный слой для работы с задачами (отвечает за бизнес логику, и вызов репозитория)

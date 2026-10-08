@@ -1,18 +1,22 @@
 package main
 
 import (
+	"fmt"
+	filerepository "github.com/Fewerim/ozon_home/task_1/internal/app/repository/file_repository"
+	"github.com/Fewerim/ozon_home/task_1/internal/app/service"
+	"github.com/Fewerim/ozon_home/task_1/internal/app/transport/cli"
 	"log"
-	"todoList/internal/app/service"
-	memoryrepository "todoList/internal/repository/memory_repository"
-	"todoList/internal/transport/cli"
 )
 
 func main() {
-	memoryrepository := memoryrepository.NewMemoryRepository()
+	memoryrepository, err := filerepository.NewFileRepository("data", "data")
+	if err != nil {
+		panic(fmt.Errorf("failed to init tasks repository: %w", err))
+	}
 	tasksService := service.NewTasksService(memoryrepository)
 	tasksHandler := cli.NewHandlerTasks(tasksService)
 
 	if err := tasksHandler.Run(); err != nil {
-		log.Fatal("failed app: %w", err)
+		log.Println(err.Error())
 	}
 }
