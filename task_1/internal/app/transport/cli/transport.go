@@ -41,18 +41,22 @@ func NewHandlerTasks(service serviceTasks) *HandlerTasks {
 
 // Run - запуск приложения
 func (h *HandlerTasks) Run() error {
-	h.scanner = bufio.NewScanner(h.in)
+	scanner := bufio.NewScanner(h.in)
 	commands := h.commands()
 
-	if _, err := fmt.Fprintln(h.out, "Добро пожаловать в консольное приложение Todo.\nДля навигации введите: 'help'!"); err != nil {
+	_, err := fmt.Fprintln(
+		h.out,
+		"Добро пожаловать в консольное приложение Todo.\nДля навигации введите: 'help'!",
+	)
+	if err != nil {
 		return err
 	}
 
-	for h.scanner.Scan() {
-		fields, err := utils.ParseStringToArgs(h.scanner.Text())
+	for scanner.Scan() {
+		fields, err := utils.ParseStringToArgs(scanner.Text())
 		if err != nil {
-			if _, printErr := fmt.Fprintf(h.out, "Ошибка ввода: %v\n", err); printErr != nil {
-				return fmt.Errorf("failed to print input error: %w", printErr)
+			if err := h.printError(err); err != nil {
+				return err
 			}
 			continue
 		}
@@ -61,28 +65,33 @@ func (h *HandlerTasks) Run() error {
 			continue
 		}
 
-		command, args := fields[0], fields[1:]
+		name, args := fields[0], fields[1:]
 
-		switch command {
-		case "help":
-			if err := h.Help(args); err != nil {
-				return err
-			}
-		case "exit":
+		if name == "exit" {
 			_, err := fmt.Fprintln(h.out, "Программа завершена!")
 			return err
-		default:
-			handler, ok := commands[command]
-			if !ok {
-				fmt.Fprintf(h.out, "Неизвестная команда: '%s', попробуйте ввести 'help'\n", command)
-				continue
-			}
+		}
 
-			if err := handler(args); err != nil {
-				fmt.Fprintln(h.out, "Ошибка:", err)
+		handler, ok := commands[name]
+		if !ok {
+			err = fmt.Errorf("неизвестная команда %q, введите help", name)
+		} else {
+			err = handler(args)
+		}
+
+		if err != nil {
+			if err := h.printError(err); err != nil {
+				return err
 			}
 		}
 	}
 
-	return h.scanner.Err()
+	return scanner.Err()
+}
+
+func (h *HandlerTasks) printError(err error) error {
+	if _, writeErr := fmt.Fprintln(h.out, "Ошибка:", err); writeErr != nil {
+		return fmt.Errorf("failed to print error: %w", writeErr)
+	}
+	return nil
 }

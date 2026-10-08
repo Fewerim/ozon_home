@@ -42,7 +42,7 @@ func (h *HandlerTasks) Help(args []string) error {
 
 	descriptions := map[string]string{
 		"add":           `add --title="Купить хлеб" --deadline="2030-01-15" — создать задачу`,
-		"get-list":      `get-list [--status=planned] [--exited] — показать список задач`,
+		"get-list":      `get-list [--status=planned] [--exited] [--search=query] — показать список задач`,
 		"get":           `get --id=1 — показать задачу`,
 		"delete":        `delete --id=1 — удалить задачу`,
 		"update":        `update --id=1 [--title="Новый заголовок"] [--deadline="2030-02-01"] — изменить задачу`,
