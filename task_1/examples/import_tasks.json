@@ -12,5 +12,10 @@
     "title": "Записаться к врачу",
     "deadline": "2030-03-10",
     "status": "planned"
+  },
+  {
+    "title": "Уйти от врача",
+    "deadline": "2030-03-10",
+    "status": "planned"
   }
 ]

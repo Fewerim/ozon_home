@@ -1,7 +1,7 @@
 package memoryrepository
 
 import (
-	"github.com/Fewerim/ozon_home/task_1/internal/app/repository/filter"
+	tasklist "github.com/Fewerim/ozon_home/task_1/internal/app/repository/task_list"
 	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
@@ -15,5 +15,5 @@ func (r *MemoryRepository) GetListTasks(targetStatus domain.TaskStatus, exited b
 	}
 
 	// применение фильтра и сортировки
-	return filter.FilterAndSort(result, targetStatus, exited), nil
+	return tasklist.FilterAndSort(result, targetStatus, exited), nil
 }

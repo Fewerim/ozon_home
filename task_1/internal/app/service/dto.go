@@ -10,14 +10,16 @@ import (
 type FiltersParams struct {
 	Status domain.TaskStatus // Один из статусов задачи ('planned', 'in_progress', 'canceled', 'done')
 	Exited bool              // true — только просроченные; false - без фильтра по дедлайну
+	Search string            // подстрока для поиска совпадений в заголовках задач
 }
 
-func NewFilterParams(targetStatus string, exited bool) *FiltersParams {
+func NewFilterParams(targetStatus, search string, exited bool) *FiltersParams {
 	status := domain.TaskStatus(targetStatus)
 
 	return &FiltersParams{
 		Status: status,
 		Exited: exited,
+		Search: search,
 	}
 }
 

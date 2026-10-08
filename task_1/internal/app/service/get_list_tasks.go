@@ -2,6 +2,8 @@ package service
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 )
@@ -24,5 +26,24 @@ func (s *TasksService) GetListTasks(filter *FiltersParams) ([]domain.Task, error
 		return nil, fmt.Errorf("failed to get list tasks from repository: %w", err)
 	}
 
-	return tasks, nil
+	return search(filter.Search, tasks), nil
+}
+
+// search - поиск по подстроке в заголовке задачи
+func search(query string, tasks []domain.Task) []domain.Task {
+	query = strings.ToLower(strings.TrimSpace(query))
+	if query == "" {
+		return tasks
+	}
+
+	result := make([]domain.Task, 0, len(tasks))
+
+	for _, task := range tasks {
+		title := strings.ToLower(task.Title)
+		if strings.Contains(title, query) {
+			result = append(result, task)
+		}
+	}
+
+	return result
 }

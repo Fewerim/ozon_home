@@ -1,11 +1,14 @@
-package filter
+package tasklist
 
 import (
 	"cmp"
-	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	"slices"
 	"time"
+
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
+
+// В теории можно было бы передавать эту функцию в аргументах метода репозитория, но в данной задаче это излишество
 
 // FilterAndSort - фильтр для получения списка задач и сортировка их по дедлайну/айди
 // Следующий фильтр: статус, только просроченные
