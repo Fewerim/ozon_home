@@ -2,9 +2,10 @@ package domain
 
 import (
 	"fmt"
-	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 	"strings"
 	"time"
+
+	core_errors "github.com/Fewerim/ozon_home/task_1/internal/core/errors"
 )
 
 const (
@@ -105,7 +106,7 @@ func (t *Task) Validate() error {
 func ParseDeadlineToNeedFormat(input string) (time.Time, error) {
 	deadline, err := time.Parse(taskDeadlineFormat, input)
 	if err != nil {
-		return time.Time{}, fmt.Errorf("failed to parse deadline to format '%v': %w", taskDeadlineFormat, core_errors.ErrInvalidArgument)
+		return time.Time{}, fmt.Errorf("failed to parse deadline %q to format %q: %w: %w", input, taskDeadlineFormat, core_errors.ErrInvalidArgument, err)
 	}
 
 	return deadline, nil

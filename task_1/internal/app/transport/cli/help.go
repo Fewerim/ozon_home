@@ -17,6 +17,7 @@ func (h *HandlerTasks) commands() map[string]commandHandler {
 		"update":        h.UpdateTask,
 		"change-status": h.ChangeTaskStatus,
 		"import":        h.ImportTasks,
+		"help":          h.Help,
 	}
 }
 
@@ -26,7 +27,7 @@ func (h *HandlerTasks) Help(args []string) error {
 	}
 
 	if len(args) == 0 {
-		names := []string{"help", "exit"}
+		names := []string{"exit"}
 		for name := range h.commands() {
 			names = append(names, name)
 		}

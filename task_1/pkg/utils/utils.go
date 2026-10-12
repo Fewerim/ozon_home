@@ -13,7 +13,7 @@ func ParseStrToInt64(str string) (int64, error) {
 
 	result, err := strconv.Atoi(str)
 	if err != nil {
-		return errorResult, fmt.Errorf("failed to parse str '%v'", str)
+		return errorResult, fmt.Errorf("failed to parse str %q: %w", str, err)
 	}
 
 	return int64(result), nil

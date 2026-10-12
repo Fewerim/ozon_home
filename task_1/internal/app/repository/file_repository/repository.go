@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/Fewerim/ozon_home/task_1/internal/core/domain"
 )
 
 // Для упрощения специально не использовал конфиг, по хорошему бы конечно, вынести все константы туда

@@ -25,9 +25,8 @@ type serviceTasks interface {
 type HandlerTasks struct {
 	service serviceTasks // имплементируемый интерфейс сервисного слоя приложения
 
-	in      io.Reader
-	out     io.Writer
-	scanner *bufio.Scanner
+	in  io.Reader
+	out io.Writer
 }
 
 func NewHandlerTasks(service serviceTasks) *HandlerTasks {
