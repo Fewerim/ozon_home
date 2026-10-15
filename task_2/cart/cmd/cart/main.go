@@ -9,6 +9,7 @@ import (
 	"github.com/Fewerim/ozon_home/task_2/cart/internal/repository/memory"
 	productsgrpc "github.com/Fewerim/ozon_home/task_2/cart/internal/repository/products-grpc"
 	cartTransportHTTP "github.com/Fewerim/ozon_home/task_2/cart/internal/transport/http"
+	"github.com/Fewerim/ozon_home/task_2/cart/pkg/middleware"
 	pb "github.com/Fewerim/ozon_home/task_2/product-service/pkg/api"
 )
 
@@ -37,7 +38,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: mux,
+		Handler: middleware.LoggingMiddleware(mux),
 	}
 
 	log.Println("cart listening :8080")
