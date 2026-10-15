@@ -20,16 +20,18 @@ func (lrw *loggingResponseWriter) WriteHeader(code int) {
 // LoggingMiddleware - логирующий миддлваре
 func LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		const nameApp = "CART"
+
 		start := time.Now()
 		lrw := &loggingResponseWriter{
 			ResponseWriter: w,
 			statusCode:     http.StatusOK,
 		}
 
-		log.Printf("> > > HTTP-REQUEST: %s %s", r.Method, r.URL.Path)
+		log.Printf("%s: > > > HTTP-REQUEST: %s %s", nameApp, r.Method, r.URL.Path)
 
 		next.ServeHTTP(lrw, r)
 
-		log.Printf("< < < HTTP-RESPONSE: %s %s %d %s", r.Method, r.URL.Path, lrw.statusCode, time.Since(start))
+		log.Printf("%s: < < < HTTP-RESPONSE: %s %s %d %s", nameApp, r.Method, r.URL.Path, lrw.statusCode, time.Since(start))
 	})
 }

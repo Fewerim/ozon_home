@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -29,6 +30,7 @@ func main() {
 
 	pb.RegisterProductServiceServer(server, app)
 
+	fmt.Println("product-service listening :50051")
 	if err := server.Serve(lis); err != nil {
 		log.Fatalf("failed to serve %v", err)
 	}
