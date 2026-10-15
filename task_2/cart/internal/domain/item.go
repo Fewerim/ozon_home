@@ -11,6 +11,3 @@ func NewItem(p Product, count uint32) *Item {
 		Count:   count,
 	}
 }
-
-// AddCount - добавляет некоторое количество товаров одного вида
-func (i *Item) AddCount(count uint32) { i.Count += count }
