@@ -36,12 +36,3 @@ func (s *ProductService) GetProduct(
 
 	return &pb.GetProductResponse{Product: dtoProduct}, nil
 }
-
-// domainProductToPB - преобразует бизнес сущность в DTO
-func domainProductToDTO(product domain.Product) *pb.Product {
-	return &pb.Product{
-		Sku:   product.Sku,
-		Name:  product.Name,
-		Price: int32(product.Price),
-	}
-}

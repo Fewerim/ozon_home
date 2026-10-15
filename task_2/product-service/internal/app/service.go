@@ -6,7 +6,8 @@ import (
 )
 
 type productRepository interface {
-	GetProduct(int64) (domain.Product, error)
+	GetProduct(sku int64) (domain.Product, error)
+	ListProducts(limit, offset int64) ([]domain.Product, error)
 }
 
 type ProductService struct {
