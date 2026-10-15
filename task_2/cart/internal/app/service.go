@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 
-	"github.com/Fewerim/ozon_home/task_2/internal/domain"
+	"github.com/Fewerim/ozon_home/task_2/cart/internal/domain"
 )
 
 // CartRepository - интерфейс хранилища корзины
