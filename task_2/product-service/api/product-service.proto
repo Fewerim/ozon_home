@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package productService;
+
+option go_package = "github.com/Fewerim/ozon_home/task_2/product-service/pkg/api;productService";
+
+service ProductService {
+    rpc GetProduct (GetProductRequest) returns (GetProductResponse) {}
+    rpc ListProducts (ListProductsRequest) returns (ListProductsResponse) {}
+}
+
+message GetProductRequest {
+    int64 sku = 1; 
+}
+
+message GetProductResponse {
+    Product product = 1;
+}
+
+message Product {
+    int64 sku = 1;
+    string name = 2;
+    int32 price = 3;
+}
+
+message ListProductsRequest {
+    optional int64 offset = 1;
+    optional int64 limit = 2;
+}
+
+
+message ListProductsResponse {
+    repeated Product products = 1;
+}
