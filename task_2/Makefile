@@ -11,3 +11,13 @@ run-all:
 	@cd product-service && go run cmd/product-service/main.go & \
 	cd ./cart && go run cmd/cart/main.go & \
 	wait
+
+.PHONY: test test-race test-api
+test:
+	go test ./...
+
+test-race:
+	go test -race ./...
+
+test-api:
+	go test -v -count=1 -tags=api ./test/
