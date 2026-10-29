@@ -17,6 +17,14 @@ func NewCart(items []Item, totalPrice uint32) *Cart {
 	}
 }
 
+func (c *Cart) UpdateItems(items []Item) {
+	c.Items = items
+	c.TotalPrice = 0
+	for _, item := range items {
+		c.TotalPrice += item.Count * item.Product.Price
+	}
+}
+
 // Sort - сортирует корзину по sku товаров
 func (c *Cart) Sort() {
 	slices.SortFunc(c.Items, func(a, b Item) int {
