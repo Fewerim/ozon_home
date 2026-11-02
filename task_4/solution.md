@@ -39,3 +39,24 @@ SELECT name, age
 ```
 
 **Пояснения:** в данном случае, мы получаем **всех** старожителей, у которых совпадает возраст, и не теряем тех, у кого может совпадать возраст, но postgreSQL их не вывел.
+
+### **Задача 2. "Перепись населения"**
+
+**Запрос:**
+```sql
+SELECT city, COUNT(name) as count_people 
+  FROM users 
+ GROUP BY city 
+HAVING COUNT(name)> 1 
+ ORDER BY count_people DESC, city ASC;
+```
+
+**Вывод:**
+```sql
+  city  | count_people 
+--------+--------------
+ Москва |            3
+ Казань |            2
+(2 rows)
+```
+  
