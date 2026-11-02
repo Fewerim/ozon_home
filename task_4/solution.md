@@ -4,9 +4,10 @@
 
 **Запрос: (простой вариант, если нам нужен только один старожитель)**
 ```sql
-SELECT name, age
-  FROM users
- ORDER BY age DESC
+SELECT name, age 
+  FROM users 
+ WHERE city='Москва' 
+ ORDER BY age DESC 
  LIMIT 1;
 ```
 
@@ -26,7 +27,8 @@ SELECT name, age
 ```sql
 SELECT name, age
   FROM users
- WHERE age = (SELECT MAX(age) FROM users);
+ WHERE age = (SELECT MAX(age) FROM users)
+   AND city = 'Москва';
 ```
 
 **Вывод:**
