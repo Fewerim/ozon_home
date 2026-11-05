@@ -27,7 +27,7 @@ SELECT name, age
 ```sql
 SELECT name, age
   FROM users
- WHERE age = (SELECT MAX(age) FROM users)
+ WHERE age = (SELECT MAX(age) FROM users WHERE city = 'Москва')
    AND city = 'Москва';
 ```
 
